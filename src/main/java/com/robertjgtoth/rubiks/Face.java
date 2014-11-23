@@ -24,26 +24,28 @@ public class Face {
 
     public void rotateClockwise() {
         Color topRightSave = pieces.get(FaceIndex.TOP_RIGHT).getColor();
-        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.TOP_CENTER).getColor());
-        pieces.get(FaceIndex.TOP_CENTER).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
-        pieces.get(FaceIndex.TOP_LEFT).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
-        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
-        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
-        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
-        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(pieces.get(FaceIndex.MIDDLE_RIGHT).getColor());
-        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(topRightSave);
+        Color topCenterSave = pieces.get(FaceIndex.TOP_CENTER).getColor();
+        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
+        pieces.get(FaceIndex.TOP_CENTER).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
+        pieces.get(FaceIndex.TOP_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
+        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
+        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
+        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.MIDDLE_RIGHT).getColor());
+        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(topRightSave);
+        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(topCenterSave);
     }
 
     public void rotateCounterClockwise() {
         Color topRightSave = pieces.get(FaceIndex.TOP_RIGHT).getColor();
-        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.MIDDLE_RIGHT).getColor());
-        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
-        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
-        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
-        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
-        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
-        pieces.get(FaceIndex.TOP_LEFT).setColor(pieces.get(FaceIndex.TOP_CENTER).getColor());
-        pieces.get(FaceIndex.TOP_CENTER).setColor(topRightSave);
+        Color middleRightSave = pieces.get(FaceIndex.MIDDLE_RIGHT).getColor();
+        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
+        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
+        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
+        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
+        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
+        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.TOP_CENTER).getColor());
+        pieces.get(FaceIndex.TOP_LEFT).setColor(topRightSave);
+        pieces.get(FaceIndex.TOP_CENTER).setColor(middleRightSave);
     }
 
     public Row getTopRow() {
@@ -90,7 +92,11 @@ public class Face {
             case 90:
                 return getRightRow(180);
             case 180:
-                return getTopRow(180);
+                return new Row(
+                        pieces.get(FaceIndex.TOP_RIGHT),
+                        pieces.get(FaceIndex.TOP_CENTER),
+                        pieces.get(FaceIndex.TOP_LEFT)
+                );
             case 270:
                 return getLeftRow(180);
             default:
@@ -189,6 +195,11 @@ public class Face {
 
     public void setTopRow(Row row) {
         getTopRow().set(row);
+    }
+
+    public void setMiddleRow(Row row)
+    {
+        getMiddleRow().set(row);
     }
 
     public void setBottomRow(Row row) {
