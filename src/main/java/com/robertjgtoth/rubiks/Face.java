@@ -1,4 +1,4 @@
-package com.rtoth.rubiks;
+package com.robertjgtoth.rubiks;
 
 import java.util.Collection;
 import java.util.HashMap;
