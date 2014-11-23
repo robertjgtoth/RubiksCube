@@ -24,6 +24,23 @@ public class Cube
         // TODO: Figure out how to implement randomize();
     }
 
+    public void up()
+    {
+        faces.get(Position.UP).rotateClockwise();
+        faces.get(Position.BACK).setTopRow(faces.get(Position.LEFT).getTopRow());
+        faces.get(Position.RIGHT).setTopRow(faces.get(Position.BACK).getTopRow());
+        faces.get(Position.FRONT).setTopRow(faces.get(Position.RIGHT).getTopRow());
+        faces.get(Position.LEFT).setTopRow(faces.get(Position.FRONT).getTopRow());
+    }
+    public void upInverse()
+    {
+        faces.get(Position.UP).rotateCounterClockwise();
+        faces.get(Position.BACK).setTopRow(faces.get(Position.RIGHT).getTopRow());
+        faces.get(Position.LEFT).setTopRow(faces.get(Position.BACK).getTopRow());
+        faces.get(Position.FRONT).setTopRow(faces.get(Position.LEFT).getTopRow());
+        faces.get(Position.RIGHT).setTopRow(faces.get(Position.FRONT).getTopRow());
+    }
+
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
@@ -31,35 +48,35 @@ public class Cube
         String dashes = new String(new char[Face.LINE_WIDTH]).replace('\0', '-');
 
         buf.append("CUBE\n-------\n");
-        buf.append(faces.get(Position.BACK).getFormattedString(spaces, spaces));
+        buf.append(faces.get(Position.BACK).getFormattedString(180, spaces, spaces));
         buf.append("\n");
         buf.append(spaces);
         buf.append(dashes);
         buf.append(spaces);
         buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getTopLineStr());
-        buf.append(faces.get(Position.UP).getTopLineStr());
-        buf.append(faces.get(Position.RIGHT).getTopLineStr());
+        buf.append(faces.get(Position.LEFT).getTopRowStr(90));
+        buf.append(faces.get(Position.UP).getTopRowStr());
+        buf.append(faces.get(Position.RIGHT).getTopRowStr(270));
         buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getMiddleLineStr());
-        buf.append(faces.get(Position.UP).getMiddleLineStr());
-        buf.append(faces.get(Position.RIGHT).getMiddleLineStr());
+        buf.append(faces.get(Position.LEFT).getMiddleRowStr(90));
+        buf.append(faces.get(Position.UP).getMiddleRowStr());
+        buf.append(faces.get(Position.RIGHT).getMiddleRowStr(270));
         buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getBottomLineStr());
-        buf.append(faces.get(Position.UP).getBottomLineStr());
-        buf.append(faces.get(Position.RIGHT).getBottomLineStr());
-        buf.append("\n");
-        buf.append(spaces);
-        buf.append(dashes);
-        buf.append(spaces);
-        buf.append("\n");
-        buf.append(faces.get(Position.FRONT).getFormattedString(spaces, spaces));
+        buf.append(faces.get(Position.LEFT).getBottomRowStr(90));
+        buf.append(faces.get(Position.UP).getBottomRowStr());
+        buf.append(faces.get(Position.RIGHT).getBottomRowStr(270));
         buf.append("\n");
         buf.append(spaces);
         buf.append(dashes);
         buf.append(spaces);
         buf.append("\n");
-        buf.append(faces.get(Position.DOWN).getFormattedString(spaces, spaces));
+        buf.append(faces.get(Position.FRONT).getFormattedString(0, spaces, spaces));
+        buf.append("\n");
+        buf.append(spaces);
+        buf.append(dashes);
+        buf.append(spaces);
+        buf.append("\n");
+        buf.append(faces.get(Position.DOWN).getFormattedString(0, spaces, spaces));
         buf.append("\n");
         buf.append("-------\n");
 

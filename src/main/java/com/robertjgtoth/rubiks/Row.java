@@ -1,0 +1,38 @@
+package com.robertjgtoth.rubiks;
+
+/**
+ * Created by rtoth on 11/22/2014.
+ */
+public class Row {
+
+    private Piece left;
+    private Piece center;
+    private Piece right;
+
+    public Row(Piece left, Piece center, Piece right)
+    {
+        this.left = left;
+        this.center = center;
+        this.right = right;
+    }
+
+    public void set(Row other)
+    {
+        this.left.setColor(other.left.getColor());
+        this.center.setColor(other.center.getColor());
+        this.right.setColor(other.center.getColor());
+    }
+
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        buf.append("|");
+        buf.append(left);
+        buf.append(center);
+        buf.append(right);
+        buf.append("|");
+
+        return buf.toString();
+    }
+}

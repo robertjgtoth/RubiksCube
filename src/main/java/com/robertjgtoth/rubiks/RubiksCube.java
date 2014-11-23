@@ -7,6 +7,7 @@ public class RubiksCube {
     public static void main(String args[])
     {
         Cube cube = new Cube();
+        cube.up();
         System.out.println(cube);
     }
 }

@@ -1,6 +1,5 @@
 package com.robertjgtoth.rubiks;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,90 +12,272 @@ public class Face {
 
     private static final int PIECES_PER_FACE = 9;
 
-    private Map<Index, Piece> pieces = new HashMap<Index, Piece>();
+    private Map<FaceIndex, Piece> pieces = new HashMap<FaceIndex, Piece>();
     private Color color;
 
-    public Face(Color color)
-    {
+    public Face(Color color) {
         this.color = color;
-        for (int i = 0; i < PIECES_PER_FACE; i++)
-        {
-            pieces.put(Index.fromInt(i), new Piece(color));
+        for (int i = 0; i < PIECES_PER_FACE; i++) {
+            pieces.put(FaceIndex.fromInt(i), new Piece(color));
         }
     }
 
-    public Collection<Piece> getPieces()
-    {
-        return pieces.values();
+    public void rotateClockwise() {
+        Color topRightSave = pieces.get(FaceIndex.TOP_RIGHT).getColor();
+        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.TOP_CENTER).getColor());
+        pieces.get(FaceIndex.TOP_CENTER).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
+        pieces.get(FaceIndex.TOP_LEFT).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
+        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
+        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
+        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
+        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(pieces.get(FaceIndex.MIDDLE_RIGHT).getColor());
+        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(topRightSave);
     }
 
-    public Color getColor()
-    {
+    public void rotateCounterClockwise() {
+        Color topRightSave = pieces.get(FaceIndex.TOP_RIGHT).getColor();
+        pieces.get(FaceIndex.TOP_RIGHT).setColor(pieces.get(FaceIndex.MIDDLE_RIGHT).getColor());
+        pieces.get(FaceIndex.MIDDLE_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_RIGHT).getColor());
+        pieces.get(FaceIndex.BOTTOM_RIGHT).setColor(pieces.get(FaceIndex.BOTTOM_CENTER).getColor());
+        pieces.get(FaceIndex.BOTTOM_CENTER).setColor(pieces.get(FaceIndex.BOTTOM_LEFT).getColor());
+        pieces.get(FaceIndex.BOTTOM_LEFT).setColor(pieces.get(FaceIndex.MIDDLE_LEFT).getColor());
+        pieces.get(FaceIndex.MIDDLE_LEFT).setColor(pieces.get(FaceIndex.TOP_LEFT).getColor());
+        pieces.get(FaceIndex.TOP_LEFT).setColor(pieces.get(FaceIndex.TOP_CENTER).getColor());
+        pieces.get(FaceIndex.TOP_CENTER).setColor(topRightSave);
+    }
+
+    public Row getTopRow() {
+        return getTopRow(0);
+    }
+
+    public Row getTopRow(int rotation) {
+        switch (rotation) {
+            case 0:
+                return new Row(
+                        pieces.get(FaceIndex.TOP_LEFT),
+                        pieces.get(FaceIndex.TOP_CENTER),
+                        pieces.get(FaceIndex.TOP_RIGHT)
+                );
+            case 90:
+                return getLeftRow();
+            case 180:
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_RIGHT),
+                        pieces.get(FaceIndex.BOTTOM_CENTER),
+                        pieces.get(FaceIndex.BOTTOM_LEFT)
+                );
+            case 270:
+                return getRightRow();
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid top row rotation! " + rotation
+                );
+        }
+    }
+
+    public Row getBottomRow() {
+        return getBottomRow(0);
+    }
+
+    public Row getBottomRow(int rotation) {
+        switch (rotation) {
+            case 0:
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_LEFT),
+                        pieces.get(FaceIndex.BOTTOM_CENTER),
+                        pieces.get(FaceIndex.BOTTOM_RIGHT)
+                );
+            case 90:
+                return getRightRow(180);
+            case 180:
+                return getTopRow(180);
+            case 270:
+                return getLeftRow(180);
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid bottom row rotation! " + rotation
+                );
+        }
+    }
+
+    public Row getLeftRow() {
+        return getLeftRow(0);
+    }
+
+    public Row getLeftRow(int rotation) {
+        switch (rotation) {
+            case 0:
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_LEFT),
+                        pieces.get(FaceIndex.MIDDLE_LEFT),
+                        pieces.get(FaceIndex.TOP_LEFT)
+                );
+            case 90:
+                return getBottomRow(180);
+            case 180:
+                return getRightRow();
+            case 270:
+                return getTopRow();
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid left row rotation! " + rotation
+                );
+        }
+    }
+
+    public Row getRightRow() {
+        return getRightRow(0);
+    }
+
+    public Row getRightRow(int rotation) {
+        switch (rotation) {
+            case 0:
+                return new Row(
+                        pieces.get(FaceIndex.TOP_RIGHT),
+                        pieces.get(FaceIndex.MIDDLE_RIGHT),
+                        pieces.get(FaceIndex.BOTTOM_RIGHT)
+                );
+            case 90:
+                return getTopRow();
+            case 180:
+                return getLeftRow();
+            case 270:
+                return getBottomRow(180);
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid right row rotation! " + rotation
+                );
+        }
+    }
+
+    public Row getMiddleRow() {
+        return getMiddleRow(0);
+    }
+
+    public Row getMiddleRow(int rotation) {
+        switch (rotation) {
+            case 0:
+                return new Row(
+                        pieces.get(FaceIndex.MIDDLE_LEFT),
+                        pieces.get(FaceIndex.MIDDLE_CENTER),
+                        pieces.get(FaceIndex.MIDDLE_RIGHT)
+                );
+            case 90:
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_CENTER),
+                        pieces.get(FaceIndex.MIDDLE_CENTER),
+                        pieces.get(FaceIndex.TOP_CENTER)
+                );
+            case 180:
+                return new Row(
+                        pieces.get(FaceIndex.MIDDLE_RIGHT),
+                        pieces.get(FaceIndex.MIDDLE_CENTER),
+                        pieces.get(FaceIndex.MIDDLE_LEFT)
+                );
+            case 270:
+                return new Row(
+                        pieces.get(FaceIndex.TOP_CENTER),
+                        pieces.get(FaceIndex.MIDDLE_CENTER),
+                        pieces.get(FaceIndex.BOTTOM_CENTER)
+                );
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid middle row rotation! " + rotation
+                );
+        }
+    }
+
+    public void setTopRow(Row row) {
+        getTopRow().set(row);
+    }
+
+    public void setBottomRow(Row row) {
+        getBottomRow().set(row);
+    }
+
+    public void setLeftRow(Row row) {
+        getLeftRow().set(row);
+    }
+
+    public void setRightRow(Row row) {
+        getRightRow().set(row);
+    }
+
+    public Color getColor() {
         return color;
     }
 
-    public String toString()
-    {
-        return getFormattedString("", "");
+    public String toString() {
+        return getFormattedString(0, "", "");
     }
 
-    public String getFormattedString(String beforeLine, String afterLine)
-    {
+    public String getFormattedString(int rotation, String beforeLine, String afterLine) {
         StringBuffer buf = new StringBuffer();
         buf.append(beforeLine);
-        buf.append(getTopLineStr());
+        buf.append(getTopRowStr(rotation));
         buf.append(afterLine);
         buf.append("\n");
         buf.append(beforeLine);
-        buf.append(getMiddleLineStr());
+        buf.append(getMiddleRowStr(rotation));
         buf.append(afterLine);
         buf.append("\n");
         buf.append(beforeLine);
-        buf.append(getBottomLineStr());
+        buf.append(getBottomRowStr(rotation));
         buf.append(afterLine);
         return buf.toString();
     }
 
-    public String getTopLineStr()
+    public String getTopRowStr()
     {
-        StringBuffer buf = new StringBuffer();
-
-        buf.append("|");
-        buf.append(pieces.get(Index.TOP_LEFT));
-        buf.append(pieces.get(Index.TOP_CENTER));
-        buf.append(pieces.get(Index.TOP_RIGHT));
-        buf.append("|");
-
-        return buf.toString();
+        return getTopRowStr(0);
     }
 
-    public String getMiddleLineStr()
+    public String getTopRowStr(int rotation)
     {
-        StringBuffer buf = new StringBuffer();
-
-        buf.append("|");
-        buf.append(pieces.get(Index.MIDDLE_LEFT));
-        buf.append(pieces.get(Index.MIDDLE_CENTER));
-        buf.append(pieces.get(Index.MIDDLE_RIGHT));
-        buf.append("|");
-
-        return buf.toString();
+        return getTopRow(rotation).toString();
     }
 
-    public String getBottomLineStr()
+    public String getBottomRowStr()
     {
-        StringBuffer buf = new StringBuffer();
-
-        buf.append("|");
-        buf.append(pieces.get(Index.BOTTOM_LEFT));
-        buf.append(pieces.get(Index.BOTTOM_CENTER));
-        buf.append(pieces.get(Index.BOTTOM_RIGHT));
-        buf.append("|");
-
-        return buf.toString();
+        return getBottomRowStr(0);
     }
 
-    private enum Index
+    public String getBottomRowStr(int rotation)
+    {
+        return getBottomRow(rotation).toString();
+    }
+
+    public String getLeftRowStr()
+    {
+        return getLeftRowStr(0);
+    }
+
+    public String getLeftRowStr(int rotation)
+    {
+        return getLeftRow(rotation).toString();
+    }
+
+    public String getRightRowStr()
+    {
+        return getRightRowStr(0);
+    }
+
+    public String getRightRowStr(int rotation)
+    {
+        return getRightRow(rotation).toString();
+    }
+
+    public String getMiddleRowStr()
+    {
+        return getMiddleRowStr(0);
+    }
+
+    public String getMiddleRowStr(int rotation)
+    {
+        return getMiddleRow(rotation).toString();
+    }
+
+    private enum FaceIndex
     {
         TOP_LEFT(0, "Top Left"),
         TOP_CENTER(1, "Top Center"),
@@ -111,24 +292,24 @@ public class Face {
         private int value;
         private String description;
 
-        private static Map<Integer, Index> indexMap = new HashMap<Integer, Index>();
+        private static Map<Integer, FaceIndex> indexMap = new HashMap<Integer, FaceIndex>();
         static
         {
-            for (Index index : Index.values())
+            for (FaceIndex index : FaceIndex.values())
             {
                 indexMap.put(index.value, index);
             }
         }
 
-        private Index(int val, String description)
+        private FaceIndex(int val, String description)
         {
             this.value = val;
             this.description = description;
         }
 
-        private static Index fromInt(int value)
+        private static FaceIndex fromInt(int value)
         {
-            Index index = indexMap.get(value);
+            FaceIndex index = indexMap.get(value);
             if (index == null)
             {
                 throw new IllegalArgumentException(
