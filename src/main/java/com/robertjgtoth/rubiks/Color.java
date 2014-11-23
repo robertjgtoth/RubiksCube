@@ -47,12 +47,6 @@ public enum Color {
         return color;
     }
 
-    public static Color random()
-    {
-        int maxVal = Collections.max(colorMap.keySet());
-        return fromInt(rand.nextInt(maxVal));
-    }
-
     public String toString()
     {
         return " " + description + " ";

@@ -11,12 +11,11 @@ public class Piece {
     {
         if (color == null)
         {
-            this.color = Color.random();
+            throw new IllegalArgumentException(
+                    "Color cannot be null!"
+            );
         }
-        else
-        {
-            this.color = color;
-        }
+        this.color = color;
     }
 
     public Color getColor()
@@ -33,5 +32,18 @@ public class Piece {
     {
         return color.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Piece piece = (Piece) o;
+
+        if (color != piece.color) return false;
+
+        return true;
+    }
+
 
 }

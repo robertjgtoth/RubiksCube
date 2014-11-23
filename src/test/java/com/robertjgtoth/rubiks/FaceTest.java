@@ -13,7 +13,7 @@ public class FaceTest {
     }
 
     @Test
-    public void testBasicStringRepresentation()
+    public void testBasicStringRepresentation() throws Exception
     {
         Face f  = new Face(Color.BLUE);
         StringBuffer expected = new StringBuffer();
@@ -23,7 +23,7 @@ public class FaceTest {
         assertEquals(expected.toString(), f.toString());
     }
 
-    @Test public void testBeforeAndAfterStringRepresentation()
+    @Test public void testBeforeAndAfterStringRepresentation() throws Exception
     {
         Face f  = new Face(Color.GREEN);
         StringBuffer expected = new StringBuffer();
@@ -34,7 +34,7 @@ public class FaceTest {
     }
 
     @Test
-    public void testSetRows()
+    public void testSetRows() throws Exception
     {
         Face f = new Face(Color.YELLOW);
         f.setTopRow(new Row(
@@ -61,7 +61,7 @@ public class FaceTest {
     }
 
     @Test
-    public void testRotatedStringRepresentation()
+    public void testRotatedStringRepresentation() throws Exception
     {
         Face f = new Face(Color.YELLOW);
         f.setTopRow(new Row(
@@ -101,7 +101,7 @@ public class FaceTest {
     }
 
     @Test
-    public void testRotateClockwise()
+    public void testRotateClockwise() throws Exception
     {
         Face f = new Face(Color.YELLOW);
         f.setTopRow(new Row(
@@ -131,7 +131,7 @@ public class FaceTest {
     }
 
     @Test
-    public void testRotateCounterClockwise()
+    public void testRotateCounterClockwise() throws Exception
     {
         Face f = new Face(Color.YELLOW);
         f.setTopRow(new Row(

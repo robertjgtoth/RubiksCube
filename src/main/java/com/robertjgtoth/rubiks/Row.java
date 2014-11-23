@@ -20,7 +20,7 @@ public class Row {
     {
         this.left.setColor(other.left.getColor());
         this.center.setColor(other.center.getColor());
-        this.right.setColor(other.center.getColor());
+        this.right.setColor(other.right.getColor());
     }
 
     public String toString()
@@ -35,4 +35,19 @@ public class Row {
 
         return buf.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Row row = (Row) o;
+
+        if (!center.equals(row.center)) return false;
+        if (!left.equals(row.left)) return false;
+        if (!right.equals(row.right)) return false;
+
+        return true;
+    }
+
 }
