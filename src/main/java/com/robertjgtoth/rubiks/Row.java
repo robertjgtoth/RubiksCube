@@ -16,6 +16,13 @@ public class Row {
         this.right = right;
     }
 
+    public Row(Row other)
+    {
+        this.left = new Piece(other.left.getColor());
+        this.center = new Piece(other.center.getColor());
+        this.right = new Piece(other.right.getColor());
+    }
+
     public void set(Row other)
     {
         this.left.setColor(other.left.getColor());

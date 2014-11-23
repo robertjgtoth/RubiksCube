@@ -90,7 +90,11 @@ public class Face {
                         pieces.get(FaceIndex.BOTTOM_RIGHT)
                 );
             case 90:
-                return getRightRow(180);
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_RIGHT),
+                        pieces.get(FaceIndex.MIDDLE_RIGHT),
+                        pieces.get(FaceIndex.TOP_RIGHT)
+                );
             case 180:
                 return new Row(
                         pieces.get(FaceIndex.TOP_RIGHT),
@@ -98,7 +102,11 @@ public class Face {
                         pieces.get(FaceIndex.TOP_LEFT)
                 );
             case 270:
-                return getLeftRow(180);
+                return new Row(
+                        pieces.get(FaceIndex.TOP_LEFT),
+                        pieces.get(FaceIndex.MIDDLE_LEFT),
+                        pieces.get(FaceIndex.BOTTOM_LEFT)
+                );
             default:
                 throw new IllegalArgumentException(
                         "Invalid bottom row rotation! " + rotation
@@ -119,11 +127,15 @@ public class Face {
                         pieces.get(FaceIndex.TOP_LEFT)
                 );
             case 90:
-                return getBottomRow(180);
+                return getBottomRow();
             case 180:
                 return getRightRow();
             case 270:
-                return getTopRow();
+                return new Row(
+                        pieces.get(FaceIndex.TOP_RIGHT),
+                        pieces.get(FaceIndex.TOP_CENTER),
+                        pieces.get(FaceIndex.TOP_LEFT)
+                );
             default:
                 throw new IllegalArgumentException(
                         "Invalid left row rotation! " + rotation
@@ -148,7 +160,11 @@ public class Face {
             case 180:
                 return getLeftRow();
             case 270:
-                return getBottomRow(180);
+                return new Row(
+                        pieces.get(FaceIndex.BOTTOM_RIGHT),
+                        pieces.get(FaceIndex.BOTTOM_CENTER),
+                        pieces.get(FaceIndex.BOTTOM_LEFT)
+                );
             default:
                 throw new IllegalArgumentException(
                         "Invalid right row rotation! " + rotation

@@ -27,18 +27,39 @@ public class Cube
     public void up()
     {
         faces.get(Position.UP).rotateClockwise();
-        faces.get(Position.BACK).setTopRow(faces.get(Position.LEFT).getTopRow());
-        faces.get(Position.RIGHT).setTopRow(faces.get(Position.BACK).getTopRow());
-        faces.get(Position.FRONT).setTopRow(faces.get(Position.RIGHT).getTopRow());
-        faces.get(Position.LEFT).setTopRow(faces.get(Position.FRONT).getTopRow());
+        Row leftTop = new Row(faces.get(Position.LEFT).getTopRow());
+        Row backTop = new Row(faces.get(Position.BACK).getTopRow());
+        Row rightTop = new Row(faces.get(Position.RIGHT).getTopRow());
+        Row frontTop = new Row(faces.get(Position.FRONT).getTopRow());
+        faces.get(Position.BACK).setTopRow(leftTop);
+        faces.get(Position.RIGHT).setTopRow(backTop);
+        faces.get(Position.FRONT).setTopRow(rightTop);
+        faces.get(Position.LEFT).setTopRow(frontTop);
     }
     public void upInverse()
     {
         faces.get(Position.UP).rotateCounterClockwise();
-        faces.get(Position.BACK).setTopRow(faces.get(Position.RIGHT).getTopRow());
-        faces.get(Position.LEFT).setTopRow(faces.get(Position.BACK).getTopRow());
-        faces.get(Position.FRONT).setTopRow(faces.get(Position.LEFT).getTopRow());
-        faces.get(Position.RIGHT).setTopRow(faces.get(Position.FRONT).getTopRow());
+        Row rightTop = new Row(faces.get(Position.RIGHT).getTopRow());
+        Row backTop = new Row(faces.get(Position.BACK).getTopRow());
+        Row leftTop = new Row(faces.get(Position.LEFT).getTopRow());
+        Row frontTop = new Row(faces.get(Position.FRONT).getTopRow());
+        faces.get(Position.BACK).setTopRow(rightTop);
+        faces.get(Position.LEFT).setTopRow(backTop);
+        faces.get(Position.FRONT).setTopRow(leftTop);
+        faces.get(Position.RIGHT).setTopRow(frontTop);
+    }
+
+    public void front()
+    {
+        faces.get(Position.FRONT).rotateClockwise();
+        Row leftRight180 = new Row(faces.get(Position.LEFT).getRightRow(180));
+        Row upBottom180 = new Row(faces.get(Position.UP).getBottomRow(180));
+        Row rightLeft = new Row(faces.get(Position.RIGHT).getLeftRow());
+        Row downTop = new Row(faces.get(Position.DOWN).getTopRow());
+        faces.get(Position.UP).setBottomRow(leftRight180);
+        faces.get(Position.RIGHT).setLeftRow(upBottom180);
+        faces.get(Position.DOWN).setTopRow(rightLeft);
+        faces.get(Position.LEFT).setRightRow(downTop);
     }
 
     public String toString()
