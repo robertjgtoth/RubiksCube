@@ -1,4 +1,4 @@
 RubiksCube
 ==========
 
-Basic text-based rubik's cube implementation
+Various attempts at a rubik's cube implementation.
