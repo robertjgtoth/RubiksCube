@@ -6,9 +6,7 @@ import com.robertjgtoth.rubiks.view.Move;
 /**
  * Created by rtoth on 11/25/2014.
  */
-public class WhiteUpOrangeFront implements Orientation {
-
-    private float[] colors;
+public class WhiteUpOrangeFront extends Orientation {
 
     public WhiteUpOrangeFront()
     {
@@ -17,19 +15,14 @@ public class WhiteUpOrangeFront implements Orientation {
                 Colors.BLUE, Colors.WHITE, Colors.YELLOW);
     }
 
-    public float[] getColors()
-    {
-        return colors;
-    }
-
     public Orientation move(Move move)
     {
         switch (move)
         {
             case DOWN:
-                return new WhiteUpOrangeFront();
+                return new RedUpWhiteFront();
             case UP:
-                return new WhiteUpOrangeFront();
+                return new WhiteUpOrangeFront();  // TODO: OrangeUpYellowFront
             case LEFT:
                 return new WhiteUpGreenFront();
             case RIGHT:
