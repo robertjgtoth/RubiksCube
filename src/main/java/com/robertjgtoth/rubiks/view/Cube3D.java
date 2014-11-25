@@ -1,7 +1,7 @@
 package com.robertjgtoth.rubiks.view;
 
 import com.robertjgtoth.rubiks.view.orientation.Orientation;
-import com.robertjgtoth.rubiks.view.orientation.Solved;
+import com.robertjgtoth.rubiks.view.orientation.WhiteUpRedFront;
 
 import javax.media.j3d.*;
 import javax.vecmath.Point3f;
@@ -74,7 +74,7 @@ public class Cube3D extends Shape3D {
             scaledVerts[i] = offsetVerts[i] * (float) scale;
         }
 
-        this.orientation = new Solved();
+        this.orientation = new WhiteUpRedFront();
 
         cube.setCoordinates(0, scaledVerts);
         cube.setColors(0, this.orientation.getColors());
