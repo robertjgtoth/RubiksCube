@@ -5,7 +5,7 @@ package com.robertjgtoth.rubiks.view;
  */
 public enum Move {
 
-    UP, DOWN, LEFT, RIGHT;
+    UP, DOWN, LEFT, RIGHT, CLOCK, COUNTER_CLOCK;
 
     private Move()
     {}

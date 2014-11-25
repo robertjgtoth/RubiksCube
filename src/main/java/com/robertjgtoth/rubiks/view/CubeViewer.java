@@ -86,7 +86,7 @@ public class CubeViewer extends Applet implements KeyListener {
         Transform3D rotation = new Transform3D();
         Transform3D temp = new Transform3D();
         rotation.rotX(Math.PI/8);
-        temp.rotY(-Math.PI/8);
+        temp.rotY(-Math.PI / 8);
         rotation.mul(temp);
         objRotate.setTransform(rotation);
 
@@ -115,11 +115,17 @@ public class CubeViewer extends Applet implements KeyListener {
         int code = event.getKeyCode();
         switch (code)
         {
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_Q:
                 move = Move.LEFT;
                 break;
-            case KeyEvent.VK_D:
+            case KeyEvent.VK_E:
                 move = Move.RIGHT;
+                break;
+            case KeyEvent.VK_A:
+                move = Move.CLOCK;
+                break;
+            case KeyEvent.VK_D:
+                move = Move.COUNTER_CLOCK;
                 break;
             case KeyEvent.VK_W:
                 move = Move.UP;
@@ -134,7 +140,7 @@ public class CubeViewer extends Applet implements KeyListener {
 
         for (Cube3D cubie : cubies)
         {
-            cubie.updateColors(move);
+            cubie.applyMove(move);
         }
     }
 

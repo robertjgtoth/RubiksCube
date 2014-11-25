@@ -19,14 +19,18 @@ public class OrangeUpWhiteFront extends Orientation {
     {
         switch (move)
         {
-            case DOWN:
-                return new OrangeUpWhiteFront();  // TODO: YellowUpOrangeFront
             case UP:
                 return new WhiteUpRedFront();
+            case DOWN:
+                return new YellowUpOrangeFront();
             case LEFT:
-                return new OrangeUpWhiteFront(); // TODO: OrangeUpBlueFront
+                return new BlueUpWhiteFront();
             case RIGHT:
-                return new OrangeUpWhiteFront(); // TODO: OrangeUpGreenFront
+                return new GreenUpWhiteFront();
+            case CLOCK:
+                return new OrangeUpBlueFront();
+            case COUNTER_CLOCK:
+                return new OrangeUpGreenFront();
             default:
                 throw new IllegalArgumentException("This should never happen");
         }

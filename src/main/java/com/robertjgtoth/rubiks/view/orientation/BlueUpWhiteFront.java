@@ -3,18 +3,16 @@ package com.robertjgtoth.rubiks.view.orientation;
 import com.robertjgtoth.rubiks.view.Colors;
 import com.robertjgtoth.rubiks.view.Move;
 
-import java.util.LinkedHashMap;
-
 /**
  * Created by rtoth on 11/25/2014.
  */
-public class RedUpWhiteFront extends Orientation {
+public class BlueUpWhiteFront extends Orientation {
 
-    public RedUpWhiteFront()
+    public BlueUpWhiteFront()
     {
         this.colors = Colors.createCubeColorGeometry(
-                Colors.WHITE, Colors.YELLOW, Colors.GREEN,
-                Colors.BLUE, Colors.RED, Colors.ORANGE);
+                Colors.WHITE, Colors.YELLOW, Colors.RED,
+                Colors.ORANGE, Colors.BLUE, Colors.GREEN);
     }
 
     public Orientation move(Move move)
@@ -22,19 +20,20 @@ public class RedUpWhiteFront extends Orientation {
         switch (move)
         {
             case UP:
-                return new WhiteUpOrangeFront();
+                return new WhiteUpGreenFront();
             case DOWN:
-                return new YellowUpRedFront();
+                return new YellowUpBlueFront();
             case LEFT:
-                return new GreenUpWhiteFront();
+                return new RedUpWhiteFront();
             case RIGHT:
-                return new BlueUpWhiteFront();
+                return new OrangeUpWhiteFront();
             case CLOCK:
-                return new RedUpGreenFront();
+                return new BlueUpRedFront();
             case COUNTER_CLOCK:
-                return new RedUpBlueFront();
+                return new BlueUpOrangeFront();
             default:
                 throw new IllegalArgumentException("This should never happen");
         }
     }
+
 }

@@ -82,7 +82,7 @@ public class Cube3D extends Shape3D {
         this.setGeometry(cube);
     }
 
-    public void updateColors(Move move)
+    public void applyMove(Move move)
     {
         QuadArray cube = (QuadArray) this.getGeometry();
         this.orientation = this.orientation.move(move);
