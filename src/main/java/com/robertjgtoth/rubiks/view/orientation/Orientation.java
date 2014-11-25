@@ -5,9 +5,14 @@ import com.robertjgtoth.rubiks.view.Move;
 /**
  * Created by rtoth on 11/25/2014.
  */
-public interface Orientation {
+public abstract class Orientation {
 
-    public float[] getColors();
+    float[] colors;
 
-    public Orientation move(Move move);
+    public float[] getColors()
+    {
+        return colors;
+    }
+
+    public abstract Orientation move(Move move);
 }
