@@ -1,4 +1,4 @@
-package com.robertjgtoth.rubiks;
+package com.robertjgtoth.rubiks.model;
 
 /**
  * Created by rtoth on 11/22/2014.
