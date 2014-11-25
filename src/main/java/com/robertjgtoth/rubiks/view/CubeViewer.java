@@ -82,6 +82,14 @@ public class CubeViewer extends Applet implements KeyListener {
         objRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         objRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
+        // Some initial perspective rotation for fun
+        Transform3D rotation = new Transform3D();
+        Transform3D temp = new Transform3D();
+        rotation.rotX(Math.PI/8);
+        temp.rotY(-Math.PI/8);
+        rotation.mul(temp);
+        objRotate.setTransform(rotation);
+
         for (Cube3D cubie : cubies)
         {
             objRotate.addChild(cubie);
