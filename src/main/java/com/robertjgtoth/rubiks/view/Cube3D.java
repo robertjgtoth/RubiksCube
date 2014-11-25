@@ -1,5 +1,8 @@
 package com.robertjgtoth.rubiks.view;
 
+import com.robertjgtoth.rubiks.view.orientation.Orientation;
+import com.robertjgtoth.rubiks.view.orientation.Solved;
+
 import javax.media.j3d.*;
 import javax.vecmath.Point3f;
 
@@ -38,45 +41,15 @@ public class Cube3D extends Shape3D {
             0.95f, -0.95f,  0.95f,
     };
 
-    private static final float[] COLORS = {
-            // front face (red)
-            0.95f, 0.0f, 0.0f,
-            0.95f, 0.0f, 0.0f,
-            0.95f, 0.0f, 0.0f,
-            0.95f, 0.0f, 0.0f,
-            // back face (orange)
-            0.95f, 0.65f, 0.0f,
-            0.95f, 0.65f, 0.0f,
-            0.95f, 0.65f, 0.0f,
-            0.95f, 0.65f, 0.0f,
-            // right face (blue)
-            0.0f, 0.0f, 0.95f,
-            0.0f, 0.0f, 0.95f,
-            0.0f, 0.0f, 0.95f,
-            0.0f, 0.0f, 0.95f,
-            // left face (green)
-            0.0f, 0.95f, 0.0f,
-            0.0f, 0.95f, 0.0f,
-            0.0f, 0.95f, 0.0f,
-            0.0f, 0.95f, 0.0f,
-            // top face (white)
-            0.95f, 0.95f, 0.95f,
-            0.95f, 0.95f, 0.95f,
-            0.95f, 0.95f, 0.95f,
-            0.95f, 0.95f, 0.95f,
-            // bottom face (yellow)
-            0.95f, 0.95f, 0.0f,
-            0.95f, 0.95f, 0.0f,
-            0.95f, 0.95f, 0.0f,
-            0.95f, 0.95f, 0.0f,
-    };
+    private Orientation orientation;
 
-    double scale;
-
-    public Cube3D(double scale, Point3f center)
+    public Cube3D(Point3f center)
     {
         QuadArray cube = new QuadArray(24, QuadArray.COORDINATES |
                 QuadArray.COLOR_3);
+
+        cube.setCapability(QuadArray.ALLOW_COLOR_READ);
+        cube.setCapability(QuadArray.ALLOW_COLOR_WRITE);
 
         float offsetVerts[] = new float[VERTS.length];
         for  (int i = 0; i < VERTS.length; i += 3)
@@ -93,15 +66,26 @@ public class Cube3D extends Shape3D {
             }
         }
 
+        double scale = 0.1;
+
         float scaledVerts[] = new float[offsetVerts.length];
         for (int i = 0; i < offsetVerts.length; i++)
-            scaledVerts[i] = offsetVerts[i] * (float)scale;
+        {
+            scaledVerts[i] = offsetVerts[i] * (float) scale;
+        }
+
+        this.orientation = new Solved();
 
         cube.setCoordinates(0, scaledVerts);
-        cube.setColors(0, COLORS);
+        cube.setColors(0, this.orientation.getColors());
 
         this.setGeometry(cube);
+    }
 
-        this.scale = scale;
+    public void updateColors(Move move)
+    {
+        QuadArray cube = (QuadArray) this.getGeometry();
+        this.orientation = this.orientation.move(move);
+        cube.setColors(0, this.orientation.getColors());
     }
 }
