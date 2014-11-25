@@ -1,4 +1,6 @@
-package com.robertjgtoth.rubiks;
+package com.robertjgtoth.rubiks.controller;
+
+import com.robertjgtoth.rubiks.model.Cube;
 
 /**
  * Created by rtoth on 11/22/2014.
