@@ -2,14 +2,11 @@ package com.robertjgtoth.rubiks.view.orientation;
 
 import com.robertjgtoth.rubiks.view.Colors;
 import com.robertjgtoth.rubiks.view.Move;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Created by rtoth on 11/25/2014.
  */
-public class WhiteUpGreenFront implements Orientation {
-
-    private float[] colors;
+public class WhiteUpGreenFront extends Orientation {
 
     public WhiteUpGreenFront()
     {
@@ -18,21 +15,16 @@ public class WhiteUpGreenFront implements Orientation {
                 Colors.ORANGE, Colors.WHITE, Colors.YELLOW);
     }
 
-    public float[] getColors()
-    {
-        return colors;
-    }
-
     public Orientation move(Move move)
     {
         switch (move)
         {
             case DOWN:
-                return new WhiteUpGreenFront();
+                return new WhiteUpGreenFront(); // TODO: BlueUpWhiteFront
             case UP:
-                return new WhiteUpGreenFront();
+                return new WhiteUpGreenFront(); // TODO: GreenUpYellowFront
             case LEFT:
-                return new Solved();
+                return new WhiteUpRedFront();
             case RIGHT:
                 return new WhiteUpOrangeFront();
             default:
