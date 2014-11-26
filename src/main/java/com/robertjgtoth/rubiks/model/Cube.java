@@ -104,7 +104,7 @@ public class Cube
         return buf.toString();
     }
 
-    private enum Position
+    public enum Position
     {
         FRONT(0, "Front", Color.RED),
         BACK(1, "Back", Color.ORANGE),

@@ -1,9 +1,11 @@
 package com.robertjgtoth.rubiks.view;
 
+import com.robertjgtoth.rubiks.model.Cube.Position;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.universe.*;
+import org.apache.commons.lang3.ArrayUtils;
+
 import javax.media.j3d.*;
-import javax.swing.*;
 import javax.vecmath.*;
 import java.applet.Applet;
 import java.awt.*;
@@ -132,6 +134,29 @@ public class CubeViewer extends Applet implements KeyListener {
     public void destroy()
     {
         universe.removeAllLocales();
+    }
+
+    private Cube3D[] getFace(Position position)
+    {
+        switch (position)
+        {
+            case FRONT:
+                return ArrayUtils.subarray(cubies, 18, 27);
+            case BACK:
+                return ArrayUtils.subarray(cubies, 0, 9);
+            case UP:
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
+                                         ArrayUtils.subarray(cubies, 18, 21)));
+            case DOWN:
+                throw new IllegalArgumentException("DOWN not implemented..");
+            case LEFT:
+                throw new IllegalArgumentException("LEFT not implemented..");
+            case RIGHT:
+                throw new IllegalArgumentException("RIGHT not implemented..");
+            default:
+                throw new IllegalArgumentException("This should never happen..");
+        }
     }
 
     public void keyPressed(KeyEvent event)
