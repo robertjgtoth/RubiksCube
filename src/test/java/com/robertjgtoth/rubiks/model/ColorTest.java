@@ -1,4 +1,4 @@
-package com.robertjgtoth.rubiks;
+package com.robertjgtoth.rubiks.model;
 
 import org.junit.Test;
 
