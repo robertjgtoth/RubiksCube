@@ -1,4 +1,4 @@
-package com.robertjgtoth.model;
+package com.robertjgtoth.rubiks.model;
 
 import java.util.HashMap;
 import java.util.Map;
