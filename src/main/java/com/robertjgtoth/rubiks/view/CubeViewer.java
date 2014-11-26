@@ -3,11 +3,14 @@ package com.robertjgtoth.rubiks.view;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.universe.*;
 import javax.media.j3d.*;
+import javax.swing.*;
 import javax.vecmath.*;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -15,10 +18,25 @@ import java.awt.event.KeyListener;
  */
 public class CubeViewer extends Applet implements KeyListener {
 
+    private static final String APPLET_POSITION_CENTER = "Center";
+    private static final String APPLET_POSITION_TOP = "North";
+    private static final String APPLET_POSITION_BOTTOM = "South";
+
+    private static final Map<Integer, Move> validMoves =
+            new HashMap<Integer, Move>();
+    static
+    {
+        validMoves.put(KeyEvent.VK_W, Move.UP);
+        validMoves.put(KeyEvent.VK_S, Move.DOWN);
+        validMoves.put(KeyEvent.VK_Q, Move.LEFT);
+        validMoves.put(KeyEvent.VK_E, Move.RIGHT);
+        validMoves.put(KeyEvent.VK_A, Move.CLOCK);
+        validMoves.put(KeyEvent.VK_D, Move.COUNTER_CLOCK);
+    }
+
     private static final int CUBIES_PER_CUBE = 27;
 
     private Cube3D cubies[] = new Cube3D[CUBIES_PER_CUBE];
-
     private SimpleUniverse universe;
     private TransformGroup objRotate;
 
@@ -27,14 +45,21 @@ public class CubeViewer extends Applet implements KeyListener {
         // Setup our layout and base universe
         setLayout(new BorderLayout());
         Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-        add("Center", canvas);
         universe = new SimpleUniverse(canvas);
-
         BranchGroup scene = createSceneGraph();
-
         universe.getViewingPlatform().setNominalViewingTransform();
         scene.compile();
         universe.addBranchGraph(scene);
+
+
+        Label title = new Label("Interactive Rubik's Cube");
+        title.setAlignment(Label.CENTER);
+        Label instructions = new Label("W: up, S: down, Q: left, E: right, A: counter-clockwise, D: clockwise");
+        instructions.setAlignment(Label.CENTER);
+
+        add(APPLET_POSITION_TOP, title);
+        add(APPLET_POSITION_CENTER, canvas);
+        add(APPLET_POSITION_BOTTOM, instructions);
 
         addKeyListener(this);
         setFocusable(true);
@@ -111,36 +136,17 @@ public class CubeViewer extends Applet implements KeyListener {
 
     public void keyPressed(KeyEvent event)
     {
-        Move move;
         int code = event.getKeyCode();
-        switch (code)
-        {
-            case KeyEvent.VK_Q:
-                move = Move.LEFT;
-                break;
-            case KeyEvent.VK_E:
-                move = Move.RIGHT;
-                break;
-            case KeyEvent.VK_A:
-                move = Move.CLOCK;
-                break;
-            case KeyEvent.VK_D:
-                move = Move.COUNTER_CLOCK;
-                break;
-            case KeyEvent.VK_W:
-                move = Move.UP;
-                break;
-            case KeyEvent.VK_S:
-                move = Move.DOWN;
-                break;
-            default:
-                System.out.println("Unrecognized Key: " + event.getKeyChar());
-                return;
-        }
+        Move move = validMoves.get(code);
 
-        for (Cube3D cubie : cubies)
-        {
-            cubie.applyMove(move);
+        if (move != null) {
+            for (Cube3D cubie : cubies) {
+                cubie.applyMove(move);
+            }
+        }
+        else {
+            System.err.println("Unrecognized key: <" + event.getKeyChar() +
+                    ">. Ignoring input...");
         }
     }
 
