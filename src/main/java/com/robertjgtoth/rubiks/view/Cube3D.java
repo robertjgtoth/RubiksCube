@@ -1,7 +1,8 @@
 package com.robertjgtoth.rubiks.view;
 
-import com.robertjgtoth.rubiks.view.orientation.Orientation;
-import com.robertjgtoth.rubiks.view.orientation.WhiteUpRedFront;
+import com.robertjgtoth.rubiks.model.Rotation;
+import com.robertjgtoth.rubiks.model.orientation.WhiteUpRedFront;
+import com.robertjgtoth.rubiks.model.orientation.Orientation;
 
 import javax.media.j3d.*;
 import javax.vecmath.Point3f;
@@ -82,10 +83,15 @@ public class Cube3D extends Shape3D {
         this.setGeometry(cube);
     }
 
-    public void applyMove(Move move)
+    public void applyRotation(Rotation rotation)
+    {
+        applyRotation(rotation, this);
+    }
+
+    public void applyRotation(Rotation rotation, Cube3D other)
     {
         QuadArray cube = (QuadArray) this.getGeometry();
-        this.orientation = this.orientation.move(move);
+        this.orientation = other.orientation.move(rotation);
         cube.setColors(0, this.orientation.getColors());
     }
 }

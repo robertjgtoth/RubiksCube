@@ -1,160 +1,127 @@
 package com.robertjgtoth.rubiks.model;
 
+import com.robertjgtoth.rubiks.view.Cube3D;
+import org.apache.commons.lang3.ArrayUtils;
+
+import javax.vecmath.Point3f;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cube
-{
+/**
+ * Created by rtoth on 11/26/2014.
+ */
+public class Cube {
 
-    private static final int NUM_FACES = 6;
+    private static final int CUBIES_PER_CUBE = 27;
+    private static final int CUBIES_PER_FACE = 9;
+    private static final int CENTER_PIVOT_CUBIE_INDEX = 13;
 
-    private Map<Position, Face> faces = new HashMap<Position, Face>();
+    private static final Map<Move, Rotation> rotationsByMove =
+            new HashMap<Move, Rotation>();
+    static
+    {
+        rotationsByMove.put(Move.UP, Rotation.CLOCK);
+        rotationsByMove.put(Move.DOWN, Rotation.COUNTER_CLOCK);
+        rotationsByMove.put(Move.LEFT, Rotation.DOWN);
+        rotationsByMove.put(Move.RIGHT, Rotation.UP);
+        rotationsByMove.put(Move.FRONT, Rotation.RIGHT);
+        rotationsByMove.put(Move.BACK, Rotation.LEFT);
+
+    }
+
+    private Cube3D cubies[] = new Cube3D[CUBIES_PER_CUBE];
 
     public Cube()
     {
-        for (int i = 0; i < NUM_FACES; i++)
+        cubies[0] = new Cube3D(new Point3f(-2.0f, 2.0f, -2.0f));
+        cubies[1] = new Cube3D(new Point3f(0.0f, 2.0f, -2.0f));
+        cubies[2] = new Cube3D(new Point3f(2.0f, 2.0f, -2.0f));
+        cubies[3] = new Cube3D(new Point3f(-2.0f, 0.0f, -2.0f));
+        cubies[4] = new Cube3D(new Point3f(0.0f, 0.0f, -2.0f));
+        cubies[5] = new Cube3D(new Point3f(2.0f, 0.0f, -2.0f));
+        cubies[6] = new Cube3D(new Point3f(-2.0f, -2.0f, -2.0f));
+        cubies[7] = new Cube3D(new Point3f(0.0f, -2.0f, -2.0f));
+        cubies[8] = new Cube3D(new Point3f(2.0f, -2.0f, -2.0f));
+
+        cubies[9] = new Cube3D(new Point3f(-2.0f, 2.0f, 0.0f));
+        cubies[10] = new Cube3D(new Point3f(0.0f, 2.0f, 0.0f));
+        cubies[11] = new Cube3D(new Point3f(2.0f, 2.0f, 0.0f));
+        cubies[12] = new Cube3D(new Point3f(-2.0f, 0.0f, 0.0f));
+        cubies[13] = new Cube3D(new Point3f(0.0f, 0.0f, 0.0f));
+        cubies[14] = new Cube3D(new Point3f(2.0f, 0.0f, 0.0f));
+        cubies[15] = new Cube3D(new Point3f(-2.0f, -2.0f, 0.0f));
+        cubies[16] = new Cube3D(new Point3f(0.0f, -2.0f, 0.0f));
+        cubies[17] = new Cube3D(new Point3f(2.0f, -2.0f, 0.0f));
+
+        cubies[18] = new Cube3D(new Point3f(-2.0f, 2.0f, 2.0f));
+        cubies[19] = new Cube3D(new Point3f(0.0f, 2.0f, 2.0f));
+        cubies[20] = new Cube3D(new Point3f(2.0f, 2.0f, 2.0f));
+        cubies[21] = new Cube3D(new Point3f(-2.0f, 0.0f, 2.0f));
+        cubies[22] = new Cube3D(new Point3f(0.0f, 0.0f, 2.0f));
+        cubies[23] = new Cube3D(new Point3f(2.0f, 0.0f, 2.0f));
+        cubies[24] = new Cube3D(new Point3f(-2.0f, -2.0f, 2.0f));
+        cubies[25] = new Cube3D(new Point3f(0.0f, -2.0f, 2.0f));
+        cubies[26] = new Cube3D(new Point3f(2.0f, -2.0f, 2.0f));
+    }
+
+    public Cube3D[] getCubies()
+    {
+        return cubies;
+    }
+
+    public Cube3D getCenterPivot()
+    {
+        return cubies[CENTER_PIVOT_CUBIE_INDEX];
+    }
+
+    private Cube3D[] getFace(Move move)
+    {
+        switch (move)
         {
-            Position pos = Position.fromInt(i);
-            faces.put(pos, new Face(pos.getDefaultColor()));
+            case FRONT:
+                return ArrayUtils.subarray(cubies, 18, 27);
+            case BACK:
+                return ArrayUtils.subarray(cubies, 0, 9);
+            case UP:
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
+                                         ArrayUtils.subarray(cubies, 18, 21)));
+            case DOWN:
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 6, 9),
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
+                                         ArrayUtils.subarray(cubies, 24, 27)));
+            case LEFT:
+                Cube3D[] left = new Cube3D[CUBIES_PER_FACE];
+                for (int i = 0; i < 9; i++)
+                    left[i] = cubies[3*i];
+                return left;
+            case RIGHT:
+                Cube3D[] right = new Cube3D[CUBIES_PER_FACE];
+                for (int i = 0; i < 9; i++)
+                    right[i] = cubies[3*i + 2];
+                return right;
+            default:
+                throw new IllegalArgumentException("This should never happen..");
         }
     }
 
-    public void randomize()
+    public void applyRotation(Rotation rotation)
     {
-        // TODO: Figure out how to implement randomize();
+        applyRotation(rotation, cubies);
     }
 
-    public void up()
+    private void applyRotation(Rotation rotation, Cube3D[] cubiesToRotate)
     {
-        faces.get(Position.UP).rotateClockwise();
-        Row leftTop = new Row(faces.get(Position.LEFT).getTopRow());
-        Row backTop = new Row(faces.get(Position.BACK).getTopRow());
-        Row rightTop = new Row(faces.get(Position.RIGHT).getTopRow());
-        Row frontTop = new Row(faces.get(Position.FRONT).getTopRow());
-        faces.get(Position.BACK).setTopRow(leftTop);
-        faces.get(Position.RIGHT).setTopRow(backTop);
-        faces.get(Position.FRONT).setTopRow(rightTop);
-        faces.get(Position.LEFT).setTopRow(frontTop);
-    }
-    public void upInverse()
-    {
-        faces.get(Position.UP).rotateCounterClockwise();
-        Row rightTop = new Row(faces.get(Position.RIGHT).getTopRow());
-        Row backTop = new Row(faces.get(Position.BACK).getTopRow());
-        Row leftTop = new Row(faces.get(Position.LEFT).getTopRow());
-        Row frontTop = new Row(faces.get(Position.FRONT).getTopRow());
-        faces.get(Position.BACK).setTopRow(rightTop);
-        faces.get(Position.LEFT).setTopRow(backTop);
-        faces.get(Position.FRONT).setTopRow(leftTop);
-        faces.get(Position.RIGHT).setTopRow(frontTop);
-    }
-
-    public void front()
-    {
-        faces.get(Position.FRONT).rotateClockwise();
-        Row leftRight180 = new Row(faces.get(Position.LEFT).getRightRow(180));
-        Row upBottom180 = new Row(faces.get(Position.UP).getBottomRow(180));
-        Row rightLeft = new Row(faces.get(Position.RIGHT).getLeftRow());
-        Row downTop = new Row(faces.get(Position.DOWN).getTopRow());
-        faces.get(Position.UP).setBottomRow(leftRight180);
-        faces.get(Position.RIGHT).setLeftRow(upBottom180);
-        faces.get(Position.DOWN).setTopRow(rightLeft);
-        faces.get(Position.LEFT).setRightRow(downTop);
-    }
-
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer();
-        String spaces = new String(new char[Face.LINE_WIDTH]).replace('\0', ' ');
-        String dashes = new String(new char[Face.LINE_WIDTH]).replace('\0', '-');
-
-        buf.append("CUBE\n-------\n");
-        buf.append(faces.get(Position.BACK).getFormattedString(180, spaces, spaces));
-        buf.append("\n");
-        buf.append(spaces);
-        buf.append(dashes);
-        buf.append(spaces);
-        buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getTopRowStr(90));
-        buf.append(faces.get(Position.UP).getTopRowStr());
-        buf.append(faces.get(Position.RIGHT).getTopRowStr(270));
-        buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getMiddleRowStr(90));
-        buf.append(faces.get(Position.UP).getMiddleRowStr());
-        buf.append(faces.get(Position.RIGHT).getMiddleRowStr(270));
-        buf.append("\n");
-        buf.append(faces.get(Position.LEFT).getBottomRowStr(90));
-        buf.append(faces.get(Position.UP).getBottomRowStr());
-        buf.append(faces.get(Position.RIGHT).getBottomRowStr(270));
-        buf.append("\n");
-        buf.append(spaces);
-        buf.append(dashes);
-        buf.append(spaces);
-        buf.append("\n");
-        buf.append(faces.get(Position.FRONT).getFormattedString(0, spaces, spaces));
-        buf.append("\n");
-        buf.append(spaces);
-        buf.append(dashes);
-        buf.append(spaces);
-        buf.append("\n");
-        buf.append(faces.get(Position.DOWN).getFormattedString(0, spaces, spaces));
-        buf.append("\n");
-        buf.append("-------\n");
-
-        return buf.toString();
-    }
-
-    public enum Position
-    {
-        FRONT(0, "Front", Color.RED),
-        BACK(1, "Back", Color.ORANGE),
-        UP(2, "Up", Color.WHITE),
-        DOWN(3, "Down", Color.YELLOW),
-        LEFT(4, "Left", Color.GREEN),
-        RIGHT(5, "Right", Color.BLUE);
-
-        private static Map<Integer, Position> positionMap = new HashMap<Integer, Position>();
-        static
-        {
-            for (Position position : Position.values())
-            {
-                positionMap.put(position.value, position);
-            }
+        for (Cube3D cubie : cubiesToRotate) {
+            cubie.applyRotation(rotation);
         }
-
-        private int value;
-        private String description;
-        private Color defaultColor;
-
-        private Position(int val, String description, Color defaultColor)
-        {
-            this.value = val;
-            this.description = description;
-            this.defaultColor = defaultColor;
-        }
-
-        private Color getDefaultColor()
-        {
-            return defaultColor;
-        }
-
-        private static Position fromInt(int value)
-        {
-            Position position = positionMap.get(value);
-            if (position == null)
-            {
-                throw new IllegalArgumentException(
-                        "Invalid position value: " + value);
-            }
-            return position;
-        }
-
-        public String toString()
-        {
-            return description;
-        }
-
     }
 
+    public void applyMove(Move move)
+    {
+        Cube3D[] face = getFace(move);
+        Rotation rotation = rotationsByMove.get(move);
+        applyRotation(rotation, face);
+    }
 
 }

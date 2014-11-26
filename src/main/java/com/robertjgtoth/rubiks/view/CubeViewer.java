@@ -1,9 +1,8 @@
 package com.robertjgtoth.rubiks.view;
 
-import com.robertjgtoth.rubiks.model.Cube.Position;
+import com.robertjgtoth.rubiks.controller.CubeController;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.universe.*;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;
@@ -11,8 +10,6 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -24,23 +21,15 @@ public class CubeViewer extends Applet implements KeyListener {
     private static final String APPLET_POSITION_TOP = "North";
     private static final String APPLET_POSITION_BOTTOM = "South";
 
-    private static final Map<Integer, Move> validMoves =
-            new HashMap<Integer, Move>();
-    static
-    {
-        validMoves.put(KeyEvent.VK_W, Move.UP);
-        validMoves.put(KeyEvent.VK_S, Move.DOWN);
-        validMoves.put(KeyEvent.VK_Q, Move.LEFT);
-        validMoves.put(KeyEvent.VK_E, Move.RIGHT);
-        validMoves.put(KeyEvent.VK_A, Move.CLOCK);
-        validMoves.put(KeyEvent.VK_D, Move.COUNTER_CLOCK);
-    }
+    private CubeController cubeController;
 
-    private static final int CUBIES_PER_CUBE = 27;
-
-    private Cube3D cubies[] = new Cube3D[CUBIES_PER_CUBE];
     private SimpleUniverse universe;
     private TransformGroup objRotate;
+
+    public CubeViewer()
+    {
+        cubeController = new CubeController();
+    }
 
     public void init()
     {
@@ -53,15 +42,25 @@ public class CubeViewer extends Applet implements KeyListener {
         scene.compile();
         universe.addBranchGraph(scene);
 
-
         Label title = new Label("Interactive Rubik's Cube");
         title.setAlignment(Label.CENTER);
-        Label instructions = new Label("W: up, S: down, Q: left, E: right, A: counter-clockwise, D: clockwise");
-        instructions.setAlignment(Label.CENTER);
+
+        Panel instructionsPanel = new Panel(new GridLayout(2,1));
+        Label instructionsTop = new Label(
+                "ROTATION: \u2191: Up, \u2193: Down, \u2190: Clockwise, \u2192: Counter-Clockwise"
+
+        );
+        instructionsTop.setAlignment(Label.CENTER);
+        Label instructionsBottom = new Label(
+                "U: Up, D: Down, L: Left, R: Right, F: Front, B: Back"
+        );
+        instructionsBottom.setAlignment(Label.CENTER);
+        instructionsPanel.add(instructionsTop);
+        instructionsPanel.add(instructionsBottom);
 
         add(APPLET_POSITION_TOP, title);
         add(APPLET_POSITION_CENTER, canvas);
-        add(APPLET_POSITION_BOTTOM, instructions);
+        add(APPLET_POSITION_BOTTOM, instructionsPanel);
 
         addKeyListener(this);
         setFocusable(true);
@@ -71,36 +70,6 @@ public class CubeViewer extends Applet implements KeyListener {
     public BranchGroup createSceneGraph()
     {
         BranchGroup root = new BranchGroup();
-
-        cubies[0] = new Cube3D(new Point3f(-2.0f, 2.0f, -2.0f));
-        cubies[1] = new Cube3D(new Point3f(0.0f, 2.0f, -2.0f));
-        cubies[2] = new Cube3D(new Point3f(2.0f, 2.0f, -2.0f));
-        cubies[3] = new Cube3D(new Point3f(-2.0f, 0.0f, -2.0f));
-        cubies[4] = new Cube3D(new Point3f(0.0f, 0.0f, -2.0f));
-        cubies[5] = new Cube3D(new Point3f(2.0f, 0.0f, -2.0f));
-        cubies[6] = new Cube3D(new Point3f(-2.0f, -2.0f, -2.0f));
-        cubies[7] = new Cube3D(new Point3f(0.0f, -2.0f, -2.0f));
-        cubies[8] = new Cube3D(new Point3f(2.0f, -2.0f, -2.0f));
-
-        cubies[9] = new Cube3D(new Point3f(-2.0f, 2.0f, 0.0f));
-        cubies[10] = new Cube3D(new Point3f(0.0f, 2.0f, 0.0f));
-        cubies[11] = new Cube3D(new Point3f(2.0f, 2.0f, 0.0f));
-        cubies[12] = new Cube3D(new Point3f(-2.0f, 0.0f, 0.0f));
-        cubies[13] = new Cube3D(new Point3f(0.0f, 0.0f, 0.0f));
-        cubies[14] = new Cube3D(new Point3f(2.0f, 0.0f, 0.0f));
-        cubies[15] = new Cube3D(new Point3f(-2.0f, -2.0f, 0.0f));
-        cubies[16] = new Cube3D(new Point3f(0.0f, -2.0f, 0.0f));
-        cubies[17] = new Cube3D(new Point3f(2.0f, -2.0f, 0.0f));
-
-        cubies[18] = new Cube3D(new Point3f(-2.0f, 2.0f, 2.0f));
-        cubies[19] = new Cube3D(new Point3f(0.0f, 2.0f, 2.0f));
-        cubies[20] = new Cube3D(new Point3f(2.0f, 2.0f, 2.0f));
-        cubies[21] = new Cube3D(new Point3f(-2.0f, 0.0f, 2.0f));
-        cubies[22] = new Cube3D(new Point3f(0.0f, 0.0f, 2.0f));
-        cubies[23] = new Cube3D(new Point3f(2.0f, 0.0f, 2.0f));
-        cubies[24] = new Cube3D(new Point3f(-2.0f, -2.0f, 2.0f));
-        cubies[25] = new Cube3D(new Point3f(0.0f, -2.0f, 2.0f));
-        cubies[26] = new Cube3D(new Point3f(2.0f, -2.0f, 2.0f));
 
         Transform3D transform = new Transform3D();
         transform.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
@@ -117,10 +86,8 @@ public class CubeViewer extends Applet implements KeyListener {
         rotation.mul(temp);
         objRotate.setTransform(rotation);
 
-        for (Cube3D cubie : cubies)
-        {
-            objRotate.addChild(cubie);
-        }
+
+        cubeController.attachTransformGroup(objRotate);
         root.addChild(objRotate);
 
         MouseRotate mouseRotate = new MouseRotate();
@@ -136,49 +103,15 @@ public class CubeViewer extends Applet implements KeyListener {
         universe.removeAllLocales();
     }
 
-    private Cube3D[] getFace(Position position)
-    {
-        switch (position)
-        {
-            case FRONT:
-                return ArrayUtils.subarray(cubies, 18, 27);
-            case BACK:
-                return ArrayUtils.subarray(cubies, 0, 9);
-            case UP:
-                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
-                                         ArrayUtils.subarray(cubies, 18, 21)));
-            case DOWN:
-                throw new IllegalArgumentException("DOWN not implemented..");
-            case LEFT:
-                throw new IllegalArgumentException("LEFT not implemented..");
-            case RIGHT:
-                throw new IllegalArgumentException("RIGHT not implemented..");
-            default:
-                throw new IllegalArgumentException("This should never happen..");
-        }
-    }
-
     public void keyPressed(KeyEvent event)
     {
-        int code = event.getKeyCode();
-        Move move = validMoves.get(code);
-
-        if (move != null) {
-            for (Cube3D cubie : cubies) {
-                cubie.applyMove(move);
-            }
-        }
-        else {
-            System.err.println("Unrecognized key: <" + event.getKeyChar() +
-                    ">. Ignoring input...");
-        }
+        cubeController.processInput(event.getKeyCode());
     }
 
     public void keyReleased(KeyEvent event)
-    {}
+    { /* Nothing to do */ }
 
     public void keyTyped(KeyEvent event)
-    {}
+    { /* Nothing to do */ }
 
 }
