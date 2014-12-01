@@ -10,4 +10,25 @@ public enum Rotation {
     private Rotation()
     {}
 
+    public static Rotation getInverse(Rotation rotation)
+    {
+        switch (rotation)
+        {
+            case UP:
+                return DOWN;
+            case DOWN:
+                return UP;
+            case LEFT:
+                return RIGHT;
+            case RIGHT:
+                return LEFT;
+            case CLOCK:
+                return COUNTER_CLOCK;
+            case COUNTER_CLOCK:
+                return CLOCK;
+            default:
+                throw new IllegalArgumentException("This should never happen..");
+        }
+    }
+
 }
