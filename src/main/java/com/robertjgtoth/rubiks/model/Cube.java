@@ -112,7 +112,8 @@ public class Cube {
 
     private void applyRotation(Rotation rotation, Cube3D[] cubiesToRotate)
     {
-        for (Cube3D cubie : cubiesToRotate) {
+        for (Cube3D cubie : cubiesToRotate)
+        {
             cubie.applyRotation(rotation);
         }
     }
@@ -121,6 +122,13 @@ public class Cube {
     {
         Cube3D[] face = getFace(move);
         Rotation rotation = rotationsByMove.get(move);
+        applyRotation(rotation, face);
+    }
+
+    public void applyInverseMove(Move move)
+    {
+        Cube3D[] face = getFace(move);
+        Rotation rotation = Rotation.getInverse(rotationsByMove.get(move));
         applyRotation(rotation, face);
     }
 
