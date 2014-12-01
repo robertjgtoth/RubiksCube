@@ -39,6 +39,8 @@ public class CubeController {
 
     private Cube cube;
 
+    private boolean invertMoves = false;
+
     public CubeController()
     {
         cube = new Cube();
@@ -60,9 +62,22 @@ public class CubeController {
         if (rotation != null) {
             cube.applyRotation(rotation);
         }
-        else if (move != null) {
-            cube.applyMove(move);
+        else if (move != null)
+        {
+            if (invertMoves)
+            {
+                cube.applyInverseMove(move);
+            }
+            else
+            {
+                cube.applyMove(move);
+            }
         }
+    }
+
+    public void setMoveInversion(boolean invert)
+    {
+        invertMoves = invert;
     }
 
 }
