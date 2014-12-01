@@ -105,11 +105,23 @@ public class CubeViewer extends Applet implements KeyListener {
 
     public void keyPressed(KeyEvent event)
     {
-        cubeController.processInput(event.getKeyCode());
+        if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+        {
+            cubeController.setMoveInversion(true);
+        }
+        else
+        {
+            cubeController.processInput(event.getKeyCode());
+        }
     }
 
     public void keyReleased(KeyEvent event)
-    { /* Nothing to do */ }
+    {
+        if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+        {
+            cubeController.setMoveInversion(false);
+        }
+    }
 
     public void keyTyped(KeyEvent event)
     { /* Nothing to do */ }
