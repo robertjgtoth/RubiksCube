@@ -17,6 +17,9 @@ import java.awt.event.KeyListener;
  */
 public class CubeViewer extends Applet implements KeyListener {
 
+    private static final int DEFAULT_APPLET_WIDTH = 750;
+    private static final int DEFAULT_APPLET_HEIGHT = 750;
+
     private static final String APPLET_POSITION_CENTER = "Center";
     private static final String APPLET_POSITION_TOP = "North";
     private static final String APPLET_POSITION_BOTTOM = "South";
@@ -61,6 +64,8 @@ public class CubeViewer extends Applet implements KeyListener {
         add(APPLET_POSITION_TOP, title);
         add(APPLET_POSITION_CENTER, canvas);
         add(APPLET_POSITION_BOTTOM, instructionsPanel);
+
+        setSize(new Dimension(DEFAULT_APPLET_WIDTH, DEFAULT_APPLET_HEIGHT));
 
         addKeyListener(this);
         setFocusable(true);
