@@ -42,17 +42,17 @@ public class CubeViewer extends Applet implements KeyListener {
         scene.compile();
         universe.addBranchGraph(scene);
 
-        Label title = new Label("Interactive Rubik's Cube");
+        Label title = new Label("ESC: Reset | ENTER: Scramble");
         title.setAlignment(Label.CENTER);
 
         Panel instructionsPanel = new Panel(new GridLayout(2,1));
         Label instructionsTop = new Label(
-                "ROTATION: \u2191: Up, \u2193: Down, \u2190: Clockwise, \u2192: Counter-Clockwise"
+                "ROTATION: \u2191: Up | \u2193: Down | \u2190: Clockwise | \u2192: Counter-Clockwise"
 
         );
         instructionsTop.setAlignment(Label.CENTER);
         Label instructionsBottom = new Label(
-                "U: Up, D: Down, L: Left, R: Right, F: Front, B: Back"
+                "U: Up | D: Down | L: Left | R: Right | F: Front | B: Back"
         );
         instructionsBottom.setAlignment(Label.CENTER);
         instructionsPanel.add(instructionsTop);
