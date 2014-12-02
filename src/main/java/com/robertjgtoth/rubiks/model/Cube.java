@@ -69,6 +69,29 @@ public class Cube {
         return cubies;
     }
 
+    public void reset()
+    {
+        for (Cube3D cubie : cubies)
+        {
+            cubie.resetOrientation();
+        }
+    }
+
+    public void scramble()
+    {
+        for (int i = 0; i < 28; i++)
+        {
+            if (i % 2 == 0)
+            {
+                applyMove(Move.getRandomMove());
+            }
+            else
+            {
+                applyInverseMove(Move.getRandomMove());
+            }
+        }
+    }
+
     public Cube3D getCenterPivot()
     {
         return cubies[CENTER_PIVOT_CUBIE_INDEX];
@@ -81,24 +104,32 @@ public class Cube {
             case FRONT:
                 return ArrayUtils.subarray(cubies, 18, 27);
             case BACK:
-                return ArrayUtils.subarray(cubies, 0, 9);
-            case UP:
-                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 18, 21),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
-                                         ArrayUtils.subarray(cubies, 0, 3)));
-            case DOWN:
                 return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 6, 9),
-                        ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
-                                ArrayUtils.subarray(cubies, 24, 27)));
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 3, 6),
+                                         ArrayUtils.subarray(cubies, 0, 3)));
+            case UP:
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
+                                         ArrayUtils.subarray(cubies, 18, 21)));
+            case DOWN:
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 24, 27),
+                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
+                                         ArrayUtils.subarray(cubies, 6, 9)));
             case LEFT:
                 Cube3D[] left = new Cube3D[CUBIES_PER_FACE];
-                for (int i = 0; i < CUBIES_PER_FACE; i++)
-                    left[i] = cubies[3*i];
+                for (int i = 0, j = 0; i < CUBIES_PER_FACE; i += 3, j++)
+                {
+                    left[i] = cubies[3 * j];
+                    left[i + 1] = cubies[3 * j + 9];
+                    left[i + 2] = cubies[3 * j + 18];
+                }
                 return left;
             case RIGHT:
                 Cube3D[] right = new Cube3D[CUBIES_PER_FACE];
                 for (int i = 0; i < CUBIES_PER_FACE; i++)
-                    right[i] = cubies[3*i + 2];
+                {
+                    right[i] = cubies[3 * i + 2];
+                }
                 return right;
             default:
                 throw new IllegalArgumentException("This should never happen..");
@@ -138,11 +169,10 @@ public class Cube {
     public void applyRotation(Rotation rotation)
     {
         applyRotation(rotation, cubies, cubies);
+        // TODO: Make this rotation work after moves have been applied!!
     }
 
-    private void applyRotation(Rotation rotation,
-                               Cube3D[] cubiesToRotate,
-                               Cube3D[] nextCubies)
+    private void applyRotation(Rotation rotation, Cube3D[] cubiesToRotate, Cube3D[] nextCubies)
     {
         for (int i = 0; i < cubiesToRotate.length; i++)
         {
