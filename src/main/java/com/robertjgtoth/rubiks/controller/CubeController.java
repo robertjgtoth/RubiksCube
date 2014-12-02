@@ -60,7 +60,7 @@ public class CubeController {
         Move move = validMoves.get(keyCode);
 
         if (rotation != null) {
-            cube.applyRotation(rotation);
+            cube.applyFullCubeRotation(rotation);
         }
         else if (move != null)
         {
