@@ -1,5 +1,6 @@
 package com.robertjgtoth.rubiks.view;
 
+import com.robertjgtoth.rubiks.model.Cube;
 import com.robertjgtoth.rubiks.model.Rotation;
 import com.robertjgtoth.rubiks.model.orientation.WhiteUpRedFront;
 import com.robertjgtoth.rubiks.model.orientation.Orientation;
@@ -42,10 +43,18 @@ public class Cube3D extends Shape3D {
             0.95f, -0.95f,  0.95f,
     };
 
+    private Point3f center;
     private Orientation orientation;
+
+    public Cube3D(Cube3D other)
+    {
+        this.center = new Point3f(other.center);
+        this.orientation = other.orientation;
+    }
 
     public Cube3D(Point3f center)
     {
+        this.center = center;
         QuadArray cube = new QuadArray(24, QuadArray.COORDINATES |
                 QuadArray.COLOR_3);
 
@@ -81,11 +90,6 @@ public class Cube3D extends Shape3D {
         cube.setColors(0, this.orientation.getColors());
 
         this.setGeometry(cube);
-    }
-
-    public void applyRotation(Rotation rotation)
-    {
-        applyRotation(rotation, this);
     }
 
     public void applyRotation(Rotation rotation, Cube3D other)
