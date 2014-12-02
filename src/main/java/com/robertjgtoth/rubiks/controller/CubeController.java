@@ -73,6 +73,14 @@ public class CubeController {
                 cube.applyMove(move);
             }
         }
+        else if (keyCode == KeyEvent.VK_ESCAPE)
+        {
+            cube.reset();
+        }
+        else if (keyCode == KeyEvent.VK_ENTER)
+        {
+            cube.scramble();
+        }
     }
 
     public void setMoveInversion(boolean invert)
