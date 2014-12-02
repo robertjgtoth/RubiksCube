@@ -43,6 +43,8 @@ public class Cube3D extends Shape3D {
             0.95f, -0.95f,  0.95f,
     };
 
+    private static final Class DEFAULT_ORIENTATION = WhiteUpRedFront.class;
+
     private Point3f center;
     private Orientation orientation;
 
@@ -84,7 +86,18 @@ public class Cube3D extends Shape3D {
             scaledVerts[i] = offsetVerts[i] * (float) scale;
         }
 
-        this.orientation = new WhiteUpRedFront();
+        try
+        {
+            this.orientation = (Orientation) DEFAULT_ORIENTATION.newInstance();
+        }
+        catch (InstantiationException ie)
+        {
+            System.err.println("Error instantiating default orientation " + ie.getMessage());
+        }
+        catch (IllegalAccessException iae)
+        {
+            System.err.println("Error instantiating default orientation " + iae.getMessage());
+        }
 
         cube.setCoordinates(0, scaledVerts);
         cube.setColors(0, this.orientation.getColors());
@@ -92,10 +105,31 @@ public class Cube3D extends Shape3D {
         this.setGeometry(cube);
     }
 
+    public void resetOrientation()
+    {
+        try
+        {
+            setAndApplyOrientation((Orientation) DEFAULT_ORIENTATION.newInstance());
+        }
+        catch (InstantiationException ie)
+        {
+            System.err.println("Error instantiating default orientation " + ie.getMessage());
+        }
+        catch (IllegalAccessException iae)
+        {
+            System.err.println("Error instantiating default orientation " + iae.getMessage());
+        }
+    }
+
     public void applyRotation(Rotation rotation, Cube3D other)
     {
+        setAndApplyOrientation(other.orientation.move(rotation));
+    }
+
+    private void setAndApplyOrientation(Orientation orientation)
+    {
         QuadArray cube = (QuadArray) this.getGeometry();
-        this.orientation = other.orientation.move(rotation);
+        this.orientation = orientation;
         cube.setColors(0, this.orientation.getColors());
     }
 }
