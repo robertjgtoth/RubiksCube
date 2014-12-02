@@ -83,21 +83,21 @@ public class Cube {
             case BACK:
                 return ArrayUtils.subarray(cubies, 0, 9);
             case UP:
-                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
+                return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 18, 21),
                        ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
-                                         ArrayUtils.subarray(cubies, 18, 21)));
+                                         ArrayUtils.subarray(cubies, 0, 3)));
             case DOWN:
                 return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 6, 9),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
-                                         ArrayUtils.subarray(cubies, 24, 27)));
+                        ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
+                                ArrayUtils.subarray(cubies, 24, 27)));
             case LEFT:
                 Cube3D[] left = new Cube3D[CUBIES_PER_FACE];
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < CUBIES_PER_FACE; i++)
                     left[i] = cubies[3*i];
                 return left;
             case RIGHT:
                 Cube3D[] right = new Cube3D[CUBIES_PER_FACE];
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < CUBIES_PER_FACE; i++)
                     right[i] = cubies[3*i + 2];
                 return right;
             default:
@@ -105,31 +105,65 @@ public class Cube {
         }
     }
 
-    public void applyRotation(Rotation rotation)
+    private Cube3D[] getTransformedFace(Cube3D[] face)
     {
-        applyRotation(rotation, cubies);
+        Cube3D[] transform = new Cube3D[CUBIES_PER_FACE];
+        transform[0] = new Cube3D(face[6]);
+        transform[1] = new Cube3D(face[3]);
+        transform[2] = new Cube3D(face[0]);
+        transform[3] = new Cube3D(face[7]);
+        transform[4] = new Cube3D(face[4]);
+        transform[5] = new Cube3D(face[1]);
+        transform[6] = new Cube3D(face[8]);
+        transform[7] = new Cube3D(face[5]);
+        transform[8] = new Cube3D(face[2]);
+        return transform;
     }
 
-    private void applyRotation(Rotation rotation, Cube3D[] cubiesToRotate)
+    private Cube3D[] getInverseTransformedFace(Cube3D[] face)
     {
-        for (Cube3D cubie : cubiesToRotate)
+        Cube3D[] transform = new Cube3D[CUBIES_PER_FACE];
+        transform[0] = new Cube3D(face[2]);
+        transform[1] = new Cube3D(face[5]);
+        transform[2] = new Cube3D(face[8]);
+        transform[3] = new Cube3D(face[1]);
+        transform[4] = new Cube3D(face[4]);
+        transform[5] = new Cube3D(face[7]);
+        transform[6] = new Cube3D(face[0]);
+        transform[7] = new Cube3D(face[3]);
+        transform[8] = new Cube3D(face[6]);
+        return transform;
+    }
+
+    public void applyRotation(Rotation rotation)
+    {
+        applyRotation(rotation, cubies, cubies);
+    }
+
+    private void applyRotation(Rotation rotation,
+                               Cube3D[] cubiesToRotate,
+                               Cube3D[] nextCubies)
+    {
+        for (int i = 0; i < cubiesToRotate.length; i++)
         {
-            cubie.applyRotation(rotation);
+            cubiesToRotate[i].applyRotation(rotation, nextCubies[i]);
         }
     }
 
     public void applyMove(Move move)
     {
         Cube3D[] face = getFace(move);
+        Cube3D[] transform = getTransformedFace(face);
         Rotation rotation = rotationsByMove.get(move);
-        applyRotation(rotation, face);
+        applyRotation(rotation, face, transform);
     }
 
     public void applyInverseMove(Move move)
     {
         Cube3D[] face = getFace(move);
+        Cube3D[] transform = getInverseTransformedFace(face);
         Rotation rotation = Rotation.getInverse(rotationsByMove.get(move));
-        applyRotation(rotation, face);
+        applyRotation(rotation, face, transform);
     }
 
 }
