@@ -1,13 +1,13 @@
 package com.robertjgtoth.rubiks.view;
 
 import com.robertjgtoth.rubiks.controller.CubeController;
-import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.universe.*;
 
 import javax.media.j3d.*;
+import javax.swing.*;
 import javax.vecmath.*;
-import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,9 +15,9 @@ import java.awt.event.KeyListener;
 /**
  * Created by rtoth on 11/24/2014.
  */
-public class CubeViewer extends Applet implements KeyListener {
+public class CubeViewer extends JApplet implements KeyListener {
 
-    private static final int DEFAULT_APPLET_WIDTH = 750;
+    private static final int DEFAULT_APPLET_WIDTH = 800;
     private static final int DEFAULT_APPLET_HEIGHT = 750;
 
     private static final String APPLET_POSITION_CENTER = "Center";
@@ -36,6 +36,25 @@ public class CubeViewer extends Applet implements KeyListener {
 
     public void init()
     {
+        try
+        {
+            SwingUtilities.invokeAndWait(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    initGui();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            System.err.println("Caught exception creating UI: " + e.getMessage());
+        }
+    }
+
+    public void initGui()
+    {
         // Setup our layout and base universe
         setLayout(new BorderLayout());
         Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
@@ -45,31 +64,30 @@ public class CubeViewer extends Applet implements KeyListener {
         scene.compile();
         universe.addBranchGraph(scene);
 
-        Label title = new Label("ESC: Reset | ENTER: Scramble");
-        title.setAlignment(Label.CENTER);
+        JLabel title = new JLabel("ESC: Reset | ENTER: Scramble", SwingConstants.CENTER);
 
-        Panel instructionsPanel = new Panel(new GridLayout(2,1));
-        Label instructionsTop = new Label(
-                "ROTATION: \u2191: Up | \u2193: Down | \u2190: Clockwise | \u2192: Counter-Clockwise"
+        JPanel instructionsPanel = new JPanel(new GridLayout(2,1));
+        JLabel instructionsTop = new JLabel(
+                "ROTATION: \u2191: Up | \u2193: Down | \u2190: Clockwise | \u2192: Counter-Clockwise",
+                SwingConstants.CENTER
 
         );
-        instructionsTop.setAlignment(Label.CENTER);
-        Label instructionsBottom = new Label(
-                "U: Up | D: Down | L: Left | R: Right | F: Front | B: Back"
+        JLabel instructionsBottom = new JLabel(
+                "U: Up | D: Down | L: Left | R: Right | F: Front | B: Back",
+                SwingConstants.CENTER
         );
-        instructionsBottom.setAlignment(Label.CENTER);
         instructionsPanel.add(instructionsTop);
         instructionsPanel.add(instructionsBottom);
 
-        add(APPLET_POSITION_TOP, title);
-        add(APPLET_POSITION_CENTER, canvas);
-        add(APPLET_POSITION_BOTTOM, instructionsPanel);
+        getContentPane().add(APPLET_POSITION_TOP, title);
+        getContentPane().add(APPLET_POSITION_CENTER, canvas);
+        getContentPane().add(APPLET_POSITION_BOTTOM, instructionsPanel);
 
         setSize(new Dimension(DEFAULT_APPLET_WIDTH, DEFAULT_APPLET_HEIGHT));
 
-        addKeyListener(this);
-        setFocusable(true);
-        requestFocusInWindow();
+        canvas.addKeyListener(this);
+        canvas.setFocusable(true);
+        canvas.requestFocusInWindow();
     }
 
     public BranchGroup createSceneGraph()
@@ -94,11 +112,6 @@ public class CubeViewer extends Applet implements KeyListener {
 
         cubeController.attachTransformGroup(objRotate);
         root.addChild(objRotate);
-
-        MouseRotate mouseRotate = new MouseRotate();
-        mouseRotate.setTransformGroup(objRotate);
-        mouseRotate.setSchedulingBounds(new BoundingSphere());
-        root.addChild(mouseRotate);
 
         return root;
     }
