@@ -1,23 +1,25 @@
 package com.robertjgtoth.rubiks.model;
 
 import com.robertjgtoth.rubiks.view.Cube3D;
+
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.vecmath.Point3f;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.vecmath.Point3f;
 
 /**
  * Created by rtoth on 11/26/2014.
  */
-public class Cube {
-
+public class Cube
+{
     private static final int CUBIES_PER_CUBE = 27;
     private static final int CUBIES_PER_FACE = 9;
     private static final int CENTER_PIVOT_CUBIE_INDEX = 13;
 
     private static final Map<Move, Rotation> rotationsByMove =
-            new HashMap<Move, Rotation>();
+        new HashMap<Move, Rotation>();
     static
     {
         rotationsByMove.put(Move.UP, Rotation.CLOCK);
@@ -278,16 +280,16 @@ public class Cube {
                 return ArrayUtils.subarray(cubies, 18, 27);
             case BACK:
                 return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 6, 9),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 3, 6),
-                                         ArrayUtils.subarray(cubies, 0, 3)));
+                    ArrayUtils.addAll(ArrayUtils.subarray(cubies, 3, 6),
+                        ArrayUtils.subarray(cubies, 0, 3)));
             case UP:
                 return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 0, 3),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
-                                         ArrayUtils.subarray(cubies, 18, 21)));
+                    ArrayUtils.addAll(ArrayUtils.subarray(cubies, 9, 12),
+                        ArrayUtils.subarray(cubies, 18, 21)));
             case DOWN:
                 return ArrayUtils.addAll(ArrayUtils.subarray(cubies, 24, 27),
-                       ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
-                                         ArrayUtils.subarray(cubies, 6, 9)));
+                    ArrayUtils.addAll(ArrayUtils.subarray(cubies, 15, 18),
+                        ArrayUtils.subarray(cubies, 6, 9)));
             case LEFT:
                 Cube3D[] left = new Cube3D[CUBIES_PER_FACE];
                 for (int i = 0, j = 0; i < CUBIES_PER_FACE; i += 3, j++)
@@ -338,5 +340,4 @@ public class Cube {
         transform[8] = new Cube3D(face[6]);
         return transform;
     }
-
 }

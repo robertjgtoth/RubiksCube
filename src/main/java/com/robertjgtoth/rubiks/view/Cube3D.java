@@ -1,46 +1,46 @@
 package com.robertjgtoth.rubiks.view;
 
-import com.robertjgtoth.rubiks.model.Cube;
 import com.robertjgtoth.rubiks.model.Rotation;
-import com.robertjgtoth.rubiks.model.orientation.WhiteUpRedFront;
 import com.robertjgtoth.rubiks.model.orientation.Orientation;
+import com.robertjgtoth.rubiks.model.orientation.WhiteUpRedFront;
 
-import javax.media.j3d.*;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3f;
 
-public class Cube3D extends Shape3D {
-
+public class Cube3D extends Shape3D
+{
     private static final float[] VERTS = {
-            // front face
-            0.95f, -0.95f,  0.95f,
-            0.95f,  0.95f,  0.95f,
-            -0.95f,  0.95f,  0.95f,
-            -0.95f, -0.95f,  0.95f,
-            // back face
-            -0.95f, -0.95f, -0.95f,
-            -0.95f,  0.95f, -0.95f,
-            0.95f,  0.95f, -0.95f,
-            0.95f, -0.95f, -0.95f,
-            // right face
-            0.95f, -0.95f, -0.95f,
-            0.95f,  0.95f, -0.95f,
-            0.95f,  0.95f,  0.95f,
-            0.95f, -0.95f,  0.95f,
-            // left face
-            -0.95f, -0.95f,  0.95f,
-            -0.95f,  0.95f,  0.95f,
-            -0.95f,  0.95f, -0.95f,
-            -0.95f, -0.95f, -0.95f,
-            // top face
-            0.95f,  0.95f,  0.95f,
-            0.95f,  0.95f, -0.95f,
-            -0.95f,  0.95f, -0.95f,
-            -0.95f,  0.95f,  0.95f,
-            // bottom face
-            -0.95f, -0.95f,  0.95f,
-            -0.95f, -0.95f, -0.95f,
-            0.95f, -0.95f, -0.95f,
-            0.95f, -0.95f,  0.95f,
+        // front face
+        0.95f, -0.95f, 0.95f,
+        0.95f, 0.95f, 0.95f,
+        -0.95f, 0.95f, 0.95f,
+        -0.95f, -0.95f, 0.95f,
+        // back face
+        -0.95f, -0.95f, -0.95f,
+        -0.95f, 0.95f, -0.95f,
+        0.95f, 0.95f, -0.95f,
+        0.95f, -0.95f, -0.95f,
+        // right face
+        0.95f, -0.95f, -0.95f,
+        0.95f, 0.95f, -0.95f,
+        0.95f, 0.95f, 0.95f,
+        0.95f, -0.95f, 0.95f,
+        // left face
+        -0.95f, -0.95f, 0.95f,
+        -0.95f, 0.95f, 0.95f,
+        -0.95f, 0.95f, -0.95f,
+        -0.95f, -0.95f, -0.95f,
+        // top face
+        0.95f, 0.95f, 0.95f,
+        0.95f, 0.95f, -0.95f,
+        -0.95f, 0.95f, -0.95f,
+        -0.95f, 0.95f, 0.95f,
+        // bottom face
+        -0.95f, -0.95f, 0.95f,
+        -0.95f, -0.95f, -0.95f,
+        0.95f, -0.95f, -0.95f,
+        0.95f, -0.95f, 0.95f,
     };
 
     private static final Class DEFAULT_ORIENTATION = WhiteUpRedFront.class;
@@ -58,19 +58,19 @@ public class Cube3D extends Shape3D {
     {
         this.center = center;
         QuadArray cube = new QuadArray(24, QuadArray.COORDINATES |
-                QuadArray.COLOR_3);
+            QuadArray.COLOR_3);
 
         cube.setCapability(QuadArray.ALLOW_COLOR_READ);
         cube.setCapability(QuadArray.ALLOW_COLOR_WRITE);
 
         float offsetVerts[] = new float[VERTS.length];
-        for  (int i = 0; i < VERTS.length; i += 3)
+        for (int i = 0; i < VERTS.length; i += 3)
         {
             try
             {
                 offsetVerts[i] = VERTS[i] + center.x;
-                offsetVerts[i+1] = VERTS[i+1] + center.y;
-                offsetVerts[i+2] = VERTS[i+2] + center.z;
+                offsetVerts[i + 1] = VERTS[i + 1] + center.y;
+                offsetVerts[i + 2] = VERTS[i + 2] + center.z;
             }
             catch (ArrayIndexOutOfBoundsException obe)
             {

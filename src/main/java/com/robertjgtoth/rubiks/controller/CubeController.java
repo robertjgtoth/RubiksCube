@@ -5,18 +5,20 @@ import com.robertjgtoth.rubiks.model.Move;
 import com.robertjgtoth.rubiks.model.Rotation;
 import com.robertjgtoth.rubiks.view.Cube3D;
 
-import javax.media.j3d.TransformGroup;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.media.j3d.TransformGroup;
+
 /**
  * Created by rtoth on 11/26/2014.
  */
-public class CubeController {
-
+public class CubeController
+{
     private static final Map<Integer, Rotation> validRotations =
-            new HashMap<Integer, Rotation>();
+        new HashMap<Integer, Rotation>();
+
     static
     {
         validRotations.put(KeyEvent.VK_UP, Rotation.UP);
@@ -26,7 +28,8 @@ public class CubeController {
     }
 
     private static final Map<Integer, Move> validMoves =
-            new HashMap<Integer, Move>();
+        new HashMap<Integer, Move>();
+
     static
     {
         validMoves.put(KeyEvent.VK_U, Move.UP);
@@ -59,7 +62,8 @@ public class CubeController {
         Rotation rotation = validRotations.get(keyCode);
         Move move = validMoves.get(keyCode);
 
-        if (rotation != null) {
+        if (rotation != null)
+        {
             cube.applyFullCubeRotation(rotation);
         }
         else if (move != null)
@@ -87,5 +91,4 @@ public class CubeController {
     {
         invertMoves = invert;
     }
-
 }

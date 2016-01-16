@@ -6,13 +6,13 @@ import com.robertjgtoth.rubiks.model.Rotation;
 /**
  * Created by rtoth on 11/25/2014.
  */
-public class RedUpGreenFront extends Orientation {
-
+public class RedUpGreenFront extends Orientation
+{
     public RedUpGreenFront()
     {
         this.colors = Colors.createCubeColorGeometry(
-                Colors.GREEN, Colors.BLUE, Colors.YELLOW,
-                Colors.WHITE, Colors.RED, Colors.ORANGE);
+            Colors.GREEN, Colors.BLUE, Colors.YELLOW,
+            Colors.WHITE, Colors.RED, Colors.ORANGE);
     }
 
     public Orientation move(Rotation rotation)

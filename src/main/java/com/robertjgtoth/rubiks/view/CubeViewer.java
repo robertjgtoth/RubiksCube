@@ -1,22 +1,31 @@
 package com.robertjgtoth.rubiks.view;
 
 import com.robertjgtoth.rubiks.controller.CubeController;
-import com.sun.j3d.utils.universe.*;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
-import javax.media.j3d.*;
-import javax.swing.*;
-import javax.vecmath.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.swing.JApplet;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.vecmath.Vector3f;
 
 
 /**
  * Created by rtoth on 11/24/2014.
  */
-public class CubeViewer extends JApplet implements KeyListener {
-
+public class CubeViewer extends JApplet implements KeyListener
+{
     private static final int DEFAULT_APPLET_WIDTH = 800;
     private static final int DEFAULT_APPLET_HEIGHT = 750;
 
@@ -50,6 +59,7 @@ public class CubeViewer extends JApplet implements KeyListener {
         catch (Exception e)
         {
             System.err.println("Caught exception creating UI: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -66,15 +76,15 @@ public class CubeViewer extends JApplet implements KeyListener {
 
         JLabel title = new JLabel("ESC: Reset | ENTER: Scramble", SwingConstants.CENTER);
 
-        JPanel instructionsPanel = new JPanel(new GridLayout(2,1));
+        JPanel instructionsPanel = new JPanel(new GridLayout(2, 1));
         JLabel instructionsTop = new JLabel(
-                "ROTATION: \u2191: Up | \u2193: Down | \u2190: Clockwise | \u2192: Counter-Clockwise",
-                SwingConstants.CENTER
+            "ROTATION: \u2191: Up | \u2193: Down | \u2190: Clockwise | \u2192: Counter-Clockwise",
+            SwingConstants.CENTER
 
         );
         JLabel instructionsBottom = new JLabel(
-                "U: Up | D: Down | L: Left | R: Right | F: Front | B: Back",
-                SwingConstants.CENTER
+            "U: Up | D: Down | L: Left | R: Right | F: Front | B: Back",
+            SwingConstants.CENTER
         );
         instructionsPanel.add(instructionsTop);
         instructionsPanel.add(instructionsBottom);
@@ -104,7 +114,7 @@ public class CubeViewer extends JApplet implements KeyListener {
         // Some initial perspective rotation for fun
         Transform3D rotation = new Transform3D();
         Transform3D temp = new Transform3D();
-        rotation.rotX(Math.PI/8);
+        rotation.rotX(Math.PI / 8);
         temp.rotY(-Math.PI / 8);
         rotation.mul(temp);
         objRotate.setTransform(rotation);
@@ -142,6 +152,7 @@ public class CubeViewer extends JApplet implements KeyListener {
     }
 
     public void keyTyped(KeyEvent event)
-    { /* Nothing to do */ }
-
+    {
+        /* Nothing to do */
+    }
 }

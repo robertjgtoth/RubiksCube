@@ -5,8 +5,8 @@ import com.robertjgtoth.rubiks.model.Rotation;
 /**
  * Created by rtoth on 11/25/2014.
  */
-public abstract class Orientation {
-
+public abstract class Orientation
+{
     float[] colors;
 
     public float[] getColors()

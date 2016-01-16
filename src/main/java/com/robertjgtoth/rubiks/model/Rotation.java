@@ -3,12 +3,9 @@ package com.robertjgtoth.rubiks.model;
 /**
  * Created by rtoth on 11/25/2014.
  */
-public enum Rotation {
-
+public enum Rotation
+{
     UP, DOWN, LEFT, RIGHT, CLOCK, COUNTER_CLOCK;
-
-    private Rotation()
-    {}
 
     public static Rotation getInverse(Rotation rotation)
     {
@@ -30,5 +27,4 @@ public enum Rotation {
                 throw new IllegalArgumentException("This should never happen..");
         }
     }
-
 }

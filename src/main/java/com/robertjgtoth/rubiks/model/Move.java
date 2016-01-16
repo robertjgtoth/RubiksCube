@@ -5,14 +5,11 @@ import java.util.Random;
 /**
  * Created by rtoth on 11/26/2014.
  */
-public enum Move {
-
+public enum Move
+{
     UP, DOWN, LEFT, RIGHT, FRONT, BACK;
 
     private static final Random random = new Random();
-
-    private Move()
-    {}
 
     public static Move getRandomMove()
     {
@@ -35,5 +32,4 @@ public enum Move {
                 return RIGHT;
         }
     }
-
 }
